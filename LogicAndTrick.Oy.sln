@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicAndTrick.Oy", "LogicAndTrick.Oy\LogicAndTrick.Oy.csproj", "{AEBA9A8F-A063-4D25-A3FE-7977330B55E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicAndTrick.Oy.Demo", "LogicAndTrick.Oy.Demo\LogicAndTrick.Oy.Demo.csproj", "{1131F87F-6253-4B44-92E8-4B78321B8FCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicAndTrick.Oy.Redis", "LogicAndTrick.Oy.Redis\LogicAndTrick.Oy.Redis.csproj", "{5ECE30F7-4F01-48D1-B9B2-85DCFF2AD837}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicAndTrick.Oy.Redis.Demo", "LogicAndTrick.Oy.Redis.Demo\LogicAndTrick.Oy.Redis.Demo.csproj", "{AD09F63E-086E-45C8-9862-DAA64C53A9D2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicAndTrick.Oy.Tests", "LogicAndTrick.Oy.Tests\LogicAndTrick.Oy.Tests.csproj", "{3EE7B21F-5FCB-4AC1-A428-A911E4DFB9F4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEBA9A8F-A063-4D25-A3FE-7977330B55E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEBA9A8F-A063-4D25-A3FE-7977330B55E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEBA9A8F-A063-4D25-A3FE-7977330B55E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEBA9A8F-A063-4D25-A3FE-7977330B55E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1131F87F-6253-4B44-92E8-4B78321B8FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1131F87F-6253-4B44-92E8-4B78321B8FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1131F87F-6253-4B44-92E8-4B78321B8FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1131F87F-6253-4B44-92E8-4B78321B8FCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ECE30F7-4F01-48D1-B9B2-85DCFF2AD837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ECE30F7-4F01-48D1-B9B2-85DCFF2AD837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ECE30F7-4F01-48D1-B9B2-85DCFF2AD837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ECE30F7-4F01-48D1-B9B2-85DCFF2AD837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD09F63E-086E-45C8-9862-DAA64C53A9D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD09F63E-086E-45C8-9862-DAA64C53A9D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD09F63E-086E-45C8-9862-DAA64C53A9D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD09F63E-086E-45C8-9862-DAA64C53A9D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE7B21F-5FCB-4AC1-A428-A911E4DFB9F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE7B21F-5FCB-4AC1-A428-A911E4DFB9F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE7B21F-5FCB-4AC1-A428-A911E4DFB9F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EE7B21F-5FCB-4AC1-A428-A911E4DFB9F4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

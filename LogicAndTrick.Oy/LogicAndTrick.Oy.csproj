@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <Authors>Daniel Walder</Authors>
+    <Company>LogicAndTrick</Company>
+    <Description>Oy is a simple extensible asyncronous message bus</Description>
+    <Copyright>2017 Daniel Walder</Copyright>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/LogicAndTrick/Oy</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/LogicAndTrick/Oy</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>message bus</PackageTags>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard1.4\LogicAndTrick.Oy.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.4\LogicAndTrick.Oy.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

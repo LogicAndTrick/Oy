@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NewtonSoft.Json">
+      <Version>9.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="StackExchange.Redis">
+      <Version>1.2.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogicAndTrick.Oy\LogicAndTrick.Oy.csproj" />
+  </ItemGroup>
+</Project>
