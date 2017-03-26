@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFrameworks>netstandard1.1;net45;</TargetFrameworks>
     <Authors>Daniel Walder</Authors>
     <Company>LogicAndTrick</Company>
     <Description>Oy is a simple extensible asyncronous message bus</Description>
@@ -11,8 +11,11 @@
     <RepositoryUrl>https://github.com/LogicAndTrick/Oy</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>message bus</PackageTags>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes>Added net45 as a target framework</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

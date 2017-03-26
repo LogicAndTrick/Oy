@@ -61,5 +61,35 @@ namespace LogicAndTrick.Oy.Tests
             Assert.Equal("Value 3", tcs3.Task.Result);
             Assert.Equal(3, hitCount);
         }
+
+        [Fact]
+        public void TestUpCasting()
+        {
+            int hitCount = 0;
+            var tcs = new TaskCompletionSource<string>();
+
+            Oy.Subscribe<string>("Test 1", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
+
+            Oy.Publish<object>("Test 1", (object)"Value 1");
+
+            Task.WaitAll(tcs.Task);
+            Assert.Equal("Value 1", tcs.Task.Result);
+            Assert.Equal(1, hitCount);
+        }
+
+        [Fact]
+        public void TestDownCasting()
+        {
+            int hitCount = 0;
+            var tcs = new TaskCompletionSource<object>();
+
+            Oy.Subscribe<object>("Test 1", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
+
+            Oy.Publish<string>("Test 1", "Value 1");
+
+            Task.WaitAll(tcs.Task);
+            Assert.Equal("Value 1", tcs.Task.Result);
+            Assert.Equal(1, hitCount);
+        }
     }
 }
