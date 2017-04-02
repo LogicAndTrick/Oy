@@ -91,5 +91,23 @@ namespace LogicAndTrick.Oy.Tests
             Assert.Equal("Value 1", tcs.Task.Result);
             Assert.Equal(1, hitCount);
         }
+
+        [Fact]
+        public async Task TestPublishAsync()
+        {
+            int i = 0;
+            Oy.Subscribe<object>("Test 1", async x =>
+            {
+                await Task.Delay(1000);
+                i = 1;
+            });
+            Oy.Subscribe<object>("Test 1", x =>
+            {
+                i = 2;
+            });
+            // All subscriptions should run in parallel
+            await Oy.Publish<object>("Test 1", new object());
+            Assert.Equal(1, i);
+        }
     }
 }

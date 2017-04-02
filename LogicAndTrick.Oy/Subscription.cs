@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace LogicAndTrick.Oy
 {
-    public class Subscription
+    public class Subscription : IDisposable
     {
         private Func<object, Message, CancellationToken, Task> _callback;
 
@@ -28,6 +28,11 @@ namespace LogicAndTrick.Oy
         internal bool ShouldPost(Message message)
         {
             return message.Name == this.Name && (int) message.Volume >= (int) this.MinimumVolume;
+        }
+
+        public void Dispose()
+        {
+            Oy.Unsubscribe(this);
         }
     }
 }
