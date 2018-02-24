@@ -12,11 +12,11 @@ namespace LogicAndTrick.Oy.Tests
         {
             var tcs = new TaskCompletionSource<string>();
 
-            Oy.Subscribe<string>("Test 1", x => {
+            Oy.Subscribe<string>("Test it works", x => {
                 tcs.SetResult(x);
             });
 
-            Oy.Publish("Test 1", "Value");
+            Oy.Publish("Test it works", "Value");
 
             tcs.Task.Wait(100);
             Assert.Equal("Value", tcs.Task.Result);
@@ -28,13 +28,13 @@ namespace LogicAndTrick.Oy.Tests
             var tcs1 = new TaskCompletionSource<string>();
             var tcs2 = new TaskCompletionSource<Tuple<int, string>>();
 
-            Oy.Subscribe<string>("Test 1", x => tcs1.SetResult(x));
-            Oy.Subscribe<Tuple<int, string>>("Test 1", x => tcs2.SetResult(x));
+            Oy.Subscribe<string>("Test MultiType", x => tcs1.SetResult(x));
+            Oy.Subscribe<Tuple<int, string>>("Test MultiType", x => tcs2.SetResult(x));
 
-            Oy.Publish("Test 1", "Value");
-            Oy.Publish("Test 1", Tuple.Create(1, "One"));
+            Oy.Publish("Test MultiType", "Value");
+            Oy.Publish("Test MultiType", Tuple.Create(1, "One"));
 
-            Task.WaitAll(tcs1.Task, tcs2.Task);
+            Task.WaitAll(new Task[] {tcs1.Task, tcs2.Task}, 100);
             Assert.Equal("Value", tcs1.Task.Result);
             Assert.Equal(Tuple.Create(1, "One"), tcs2.Task.Result);
         }
@@ -47,15 +47,15 @@ namespace LogicAndTrick.Oy.Tests
             var tcs2 = new TaskCompletionSource<string>();
             var tcs3 = new TaskCompletionSource<string>();
 
-            Oy.Subscribe<string>("Test 1", x => { Interlocked.Add(ref hitCount, 1); tcs1.SetResult(x); });
-            Oy.Subscribe<string>("Test 2", x => { Interlocked.Add(ref hitCount, 1); tcs2.SetResult(x); });
-            Oy.Subscribe<string>("Test 3", x => { Interlocked.Add(ref hitCount, 1); tcs3.SetResult(x); });
+            Oy.Subscribe<string>("Test MultiChannel 1", x => { Interlocked.Add(ref hitCount, 1); tcs1.SetResult(x); });
+            Oy.Subscribe<string>("Test MultiChannel 2", x => { Interlocked.Add(ref hitCount, 1); tcs2.SetResult(x); });
+            Oy.Subscribe<string>("Test MultiChannel 3", x => { Interlocked.Add(ref hitCount, 1); tcs3.SetResult(x); });
 
-            Oy.Publish("Test 1", "Value 1");
-            Oy.Publish("Test 2", "Value 2");
-            Oy.Publish("Test 3", "Value 3");
+            Oy.Publish("Test MultiChannel 1", "Value 1");
+            Oy.Publish("Test MultiChannel 2", "Value 2");
+            Oy.Publish("Test MultiChannel 3", "Value 3");
 
-            Task.WaitAll(tcs1.Task, tcs2.Task, tcs3.Task);
+            Task.WaitAll(new Task[] {tcs1.Task, tcs2.Task, tcs3.Task}, 100);
             Assert.Equal("Value 1", tcs1.Task.Result);
             Assert.Equal("Value 2", tcs2.Task.Result);
             Assert.Equal("Value 3", tcs3.Task.Result);
@@ -68,11 +68,11 @@ namespace LogicAndTrick.Oy.Tests
             int hitCount = 0;
             var tcs = new TaskCompletionSource<string>();
 
-            Oy.Subscribe<string>("Test 1", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
+            Oy.Subscribe<string>("Test Upcasting", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
 
-            Oy.Publish<object>("Test 1", (object)"Value 1");
+            Oy.Publish<object>("Test Upcasting", (object)"Value 1");
 
-            Task.WaitAll(tcs.Task);
+            tcs.Task.Wait(100);
             Assert.Equal("Value 1", tcs.Task.Result);
             Assert.Equal(1, hitCount);
         }
@@ -83,31 +83,55 @@ namespace LogicAndTrick.Oy.Tests
             int hitCount = 0;
             var tcs = new TaskCompletionSource<object>();
 
-            Oy.Subscribe<object>("Test 1", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
+            Oy.Subscribe<object>("Test Downcasting", x => { Interlocked.Add(ref hitCount, 1); tcs.SetResult(x); });
 
-            Oy.Publish<string>("Test 1", "Value 1");
-
-            Task.WaitAll(tcs.Task);
+            Oy.Publish<string>("Test Downcasting", "Value 1");
+            
+            tcs.Task.Wait(100);
             Assert.Equal("Value 1", tcs.Task.Result);
             Assert.Equal(1, hitCount);
         }
 
         [Fact]
-        public async Task TestPublishAsync()
+        public void TestPublishAsync()
         {
             int i = 0;
-            Oy.Subscribe<object>("Test 1", async x =>
+            Oy.Subscribe<object>("Test Async", async x =>
             {
-                await Task.Delay(1000);
+                await Task.Delay(100);
                 i = 1;
             });
-            Oy.Subscribe<object>("Test 1", x =>
+            Oy.Subscribe<object>("Test Async", x =>
             {
                 i = 2;
             });
             // All subscriptions should run in parallel
-            await Oy.Publish<object>("Test 1", new object());
+            Oy.Publish<object>("Test Async", new object()).Wait(200);
             Assert.Equal(1, i);
+        }
+
+        [Fact]
+        public void TestStruct()
+        {
+            int number = 0;
+            Oy.Subscribe<decimal>("Test 1", d =>
+            {
+                Interlocked.Add(ref number, (int) d);
+            });
+            Oy.Publish("Test 1", 10m).Wait(100);
+            Assert.Equal(10, number);
+        }
+
+        [Fact]
+        public void TestEmpty()
+        {
+            int number = 0;
+            Oy.Subscribe("Nothing", () =>
+            {
+                Interlocked.Add(ref number, 1);
+            });
+            Oy.Publish("Nothing").Wait(100);
+            Assert.Equal(1, number);
         }
     }
 }

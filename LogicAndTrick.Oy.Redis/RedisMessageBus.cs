@@ -18,18 +18,18 @@ namespace LogicAndTrick.Oy.Redis
             _handlers = new ConcurrentDictionary<Subscription, Action<RedisChannel, RedisValue>>();
         }
 
-        public async Task Publish<T>(string name, T obj, Volume volume = Volume.Normal, CancellationToken token = default(CancellationToken)) where T : class
+        public async Task Publish<T>(string name, T obj, Volume volume = Volume.Normal, CancellationToken token = default(CancellationToken))
         {
             var sub = _connection.GetSubscriber();
             var message = new Message(name, JsonConvert.SerializeObject(obj), volume);
             await sub.PublishAsync(name, JsonConvert.SerializeObject(message));
         }
 
-        public Subscription Subscribe<T>(string name, Func<T, Message, CancellationToken, Task> callback, Volume minimumVolume = Volume.Normal) where T : class
+        public Subscription Subscribe<T>(string name, Func<T, Message, CancellationToken, Task> callback, Volume minimumVolume = Volume.Normal)
         {
             var subscription = new Subscription(name, async (o, m, t) => {
                 if (o is T) await callback.Invoke((T) o, m, t);
-            }, minimumVolume);
+            }, minimumVolume, Unsubscribe);
 
             Action<RedisChannel, RedisValue> handler = (c, v) => {
                 var msg = JsonConvert.DeserializeObject<Message>(v);

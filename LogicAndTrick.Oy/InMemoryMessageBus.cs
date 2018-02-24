@@ -27,7 +27,7 @@ namespace LogicAndTrick.Oy
         }
 
         /// <inheritdoc />
-        public async Task Publish<T>(string name, T obj, Volume volume = Volume.Normal, CancellationToken token = default(CancellationToken)) where T : class
+        public async Task Publish<T>(string name, T obj, Volume volume = Volume.Normal, CancellationToken token = default(CancellationToken))
         {
             var message = new Message(name, obj, volume);
             // Process subscriptions and unsubscriptions
@@ -64,11 +64,11 @@ namespace LogicAndTrick.Oy
         }
 
         /// <inheritdoc />
-        public Subscription Subscribe<T>(string name, Func<T, Message, CancellationToken, Task> callback, Volume minimumVolume = Volume.Normal) where T : class
+        public Subscription Subscribe<T>(string name, Func<T, Message, CancellationToken, Task> callback, Volume minimumVolume = Volume.Normal)
         {
             var sub = new Subscription(name, async (o, m, t) => {
-                if (o is T) await callback.Invoke((T) o, m, t);
-            }, minimumVolume);
+                if (o is T variable) await callback.Invoke(variable, m, t);
+            }, minimumVolume, Unsubscribe);
             _pendingSubscriptions.Enqueue(sub);
             return sub;
         }

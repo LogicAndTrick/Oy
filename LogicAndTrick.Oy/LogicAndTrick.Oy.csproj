@@ -4,18 +4,18 @@
     <TargetFrameworks>netstandard1.1;net45;</TargetFrameworks>
     <Authors>Daniel Walder</Authors>
     <Company>LogicAndTrick</Company>
-    <Description>Oy is a simple extensible asyncronous message bus</Description>
+    <Description>Oy is a simple extensible asynchronous message bus</Description>
     <Copyright>2017 Daniel Walder</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/LogicAndTrick/Oy</PackageProjectUrl>
     <RepositoryUrl>https://github.com/LogicAndTrick/Oy</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>message bus</PackageTags>
-    <PackageReleaseNotes>Make handlers run async</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove limit on object types, add empty message handler</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.2</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
