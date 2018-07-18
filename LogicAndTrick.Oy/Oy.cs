@@ -11,6 +11,15 @@ namespace LogicAndTrick.Oy
     {
         private static Lazy<IMessageBus> _instance;
 
+        /// <summary>
+        /// Thrown when an exception is thrown while processing a message
+        /// </summary>
+        public static event UnhandledExceptionEventHandler UnhandledException
+        {
+            add => _instance.Value.UnhandledException += value;
+            remove => _instance.Value.UnhandledException -= value;
+        }
+
         static Oy()
         {
             _instance = new Lazy<IMessageBus>(() => new InMemoryMessageBus());

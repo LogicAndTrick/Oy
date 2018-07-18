@@ -133,5 +133,17 @@ namespace LogicAndTrick.Oy.Tests
             Oy.Publish("Nothing").Wait(100);
             Assert.Equal(1, number);
         }
+
+        [Fact]
+        public void TestExceptionHandling()
+        {
+            Exception ex = null;
+            Oy.UnhandledException += (s, a) => { ex = a.Exception; };
+            Oy.Subscribe("Nothing", () => throw new NotImplementedException());
+
+            Oy.Publish("Nothing").Wait(100);
+
+            Assert.IsType<NotImplementedException>(ex);
+        }
     }
 }

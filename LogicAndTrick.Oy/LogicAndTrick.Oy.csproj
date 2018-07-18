@@ -11,11 +11,11 @@
     <RepositoryUrl>https://github.com/LogicAndTrick/Oy</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>message bus</PackageTags>
-    <PackageReleaseNotes>Remove limit on object types, add empty message handler</PackageReleaseNotes>
+    <PackageReleaseNotes>Add exception handler</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <Version>1.2.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

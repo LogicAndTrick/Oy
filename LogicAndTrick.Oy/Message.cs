@@ -1,11 +1,31 @@
 namespace LogicAndTrick.Oy
 {
+    /// <summary>
+    /// A message object
+    /// </summary>
     public class Message
     {
-        public string Name { get; internal set; }
-        public Volume Volume { get; internal set; }
+        /// <summary>
+        /// The name of the message
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
+        /// The volume of the message
+        /// </summary>
+        public Volume Volume { get; private set; }
+
+        /// <summary>
+        /// The message data
+        /// </summary>
         public object Object { get; set; }
 
+        /// <summary>
+        /// Create a message
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="obj"></param>
+        /// <param name="volume"></param>
         public Message(string name, object obj, Volume volume)
         {
             Name = name;
@@ -13,10 +33,14 @@ namespace LogicAndTrick.Oy
             Object = obj;
         }
 
+        /// <summary>
+        /// Consume this message by reducing the volume
+        /// </summary>
         public void Consume()
         {
-            if (this.Volume == Volume.Normal) {
-                this.Volume = Volume.Low;
+            if (Volume == Volume.Normal)
+            {
+                Volume = Volume.Low;
             }
         }
     }

@@ -32,8 +32,7 @@ namespace LogicAndTrick.Oy
             var message = new Message(name, obj, volume);
             // Process subscriptions and unsubscriptions
             Subscription sub;
-            bool b;
-            while (_pendingUnsubscriptions.TryDequeue(out sub)) _subscriptions.TryRemove(sub, out b);
+            while (_pendingUnsubscriptions.TryDequeue(out sub)) _subscriptions.TryRemove(sub, out _);
             while (_pendingSubscriptions.TryDequeue(out sub)) _subscriptions.TryAdd(sub, true);
 
             var done = Task.FromResult(0);
@@ -55,12 +54,27 @@ namespace LogicAndTrick.Oy
                 {
                     list.Add(subscription.Invoke(obj, message, token));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    continue;
+                    UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex));
                 }
             }
-            await Task.WhenAll(list);
+
+            try
+            {
+                await Task.WhenAll(list);
+            }
+            catch (AggregateException ex)
+            {
+                foreach (var aex in ex.InnerExceptions)
+                {
+                    UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(aex));
+                }
+            }
+            catch (Exception ex)
+            {
+                UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex));
+            }
         }
 
         /// <inheritdoc />
@@ -78,5 +92,8 @@ namespace LogicAndTrick.Oy
         {
             _pendingUnsubscriptions.Enqueue(subscription);
         }
+
+        /// <inheritdoc />
+        public event UnhandledExceptionEventHandler UnhandledException;
     }
 }

@@ -9,8 +9,8 @@ namespace LogicAndTrick.Oy.Redis
 {
     public class RedisMessageBus : IMessageBus
     {
-        private ConnectionMultiplexer _connection;
-        private ConcurrentDictionary<Subscription, Action<RedisChannel, RedisValue>> _handlers;
+        private readonly ConnectionMultiplexer _connection;
+        private readonly ConcurrentDictionary<Subscription, Action<RedisChannel, RedisValue>> _handlers;
 
         public RedisMessageBus(ConnectionMultiplexer connection)
         {
@@ -28,36 +28,41 @@ namespace LogicAndTrick.Oy.Redis
         public Subscription Subscribe<T>(string name, Func<T, Message, CancellationToken, Task> callback, Volume minimumVolume = Volume.Normal)
         {
             var subscription = new Subscription(name, async (o, m, t) => {
-                if (o is T) await callback.Invoke((T) o, m, t);
+                if (o is T variable) await callback.Invoke(variable, m, t);
             }, minimumVolume, Unsubscribe);
 
-            Action<RedisChannel, RedisValue> handler = (c, v) => {
-                var msg = JsonConvert.DeserializeObject<Message>(v);
-                try {
-                    msg.Object = JsonConvert.DeserializeObject<T>(msg.Object as string);
-                    subscription.Invoke(msg.Object, msg, CancellationToken.None);
-                } catch (JsonSerializationException) {
-                    // Not a valid object
-                }
-            };
-
-            if (!_handlers.TryAdd(subscription, handler)) {
+            if (!_handlers.TryAdd(subscription, Handler)) {
                 throw new Exception("Unable to subscribe");
             }
 
             var sub = _connection.GetSubscriber();
-            sub.Subscribe(name, handler);
+            sub.Subscribe(name, Handler);
 
             return subscription;
+
+            void Handler(RedisChannel c, RedisValue v)
+            {
+                try
+                {
+                    var msg = JsonConvert.DeserializeObject<Message>(v);
+                    msg.Object = JsonConvert.DeserializeObject<T>(msg.Object as string);
+                    subscription.Invoke(msg.Object, msg, CancellationToken.None);
+                }
+                catch (Exception ex)
+                {
+                    UnhandledException?.Invoke(this, new UnhandledExceptionEventArgs(ex));
+                }
+            }
         }
 
         public void Unsubscribe(Subscription subscription)
         {
-            Action<RedisChannel, RedisValue> act;
-            if (_handlers.TryRemove(subscription, out act)) {
-                var sub = _connection.GetSubscriber();
-                sub.Unsubscribe(subscription.Name, act);
-            }
+            if (!_handlers.TryRemove(subscription, out var act)) return;
+            var sub = _connection.GetSubscriber();
+            sub.Unsubscribe(subscription.Name, act);
         }
+
+        /// <inheritdoc />
+        public event UnhandledExceptionEventHandler UnhandledException;
     }
 }

@@ -9,7 +9,7 @@ namespace LogicAndTrick.Oy
     /// </summary>
     internal class Nothing
     {
-        public static Nothing Instance = new Nothing();
+        public static readonly Nothing Instance = new Nothing();
 
         private Nothing()
         {
